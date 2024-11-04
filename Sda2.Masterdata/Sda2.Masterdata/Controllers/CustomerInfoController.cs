@@ -10,9 +10,12 @@ public class CustomerInfoController : ControllerBase
 {
     private readonly ICustomerInfoRepository _customerRepository;
 
-    public CustomerInfoController(ICustomerInfoRepository customerRepository)
+    private readonly ICartHttpService _cartHttpService;
+
+    public CustomerInfoController(ICustomerInfoRepository customerRepository, ICartHttpService cartHttpService)
     {
         _customerRepository = customerRepository;
+        _cartHttpService = cartHttpService;
     }
 
     [HttpGet]
@@ -57,7 +60,7 @@ public class CustomerInfoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<IActionResult> UpdateAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         bool exists = await _customerRepository.ExistAsync(id);
 
@@ -68,6 +71,12 @@ public class CustomerInfoController : ControllerBase
 
         bool success = await _customerRepository.DeleteAsync(id);
 
-        return success ? NoContent() : Problem();
+        bool deletedResultsOnOtherMicroservice = true;
+        if (success)
+        {
+            deletedResultsOnOtherMicroservice = await _cartHttpService.DeleteCartInprogressAsync(id);
+        }
+
+        return success && deletedResultsOnOtherMicroservice ? NoContent() : Problem();
     }
 }

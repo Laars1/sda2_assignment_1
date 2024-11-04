@@ -57,7 +57,7 @@ public class EmployeeInfoController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-    public async Task<IActionResult> UpdateAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         bool exists = await _employeeRepository.ExistAsync(id);
 
