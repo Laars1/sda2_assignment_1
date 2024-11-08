@@ -78,11 +78,11 @@ public class CartInprogressController : ControllerBase
 
     public async Task<IActionResult> DeleteByCustomerIdAsync(int customerId)
     {
-        bool exists = await _cartInprogressRepository.CustomerHasEntries(customerId);
+        bool exists = await _cartInprogressRepository.CustomerHasEntriesAsync(customerId);
 
         if (!exists)
         {
-            return NotFound();
+            return NoContent();
         }
 
         bool success = await _cartInprogressRepository.DeleteByCustomerIdAsync(customerId);
@@ -95,7 +95,7 @@ public class CartInprogressController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> AddCartAsync(int cid, int productId)
     {
-        bool success = await _cartInprogressRepository.AddCart(cid, productId);
+        bool success = await _cartInprogressRepository.AddCartAsync(cid, productId);
 
         return success ? NoContent() : Problem();
     }
@@ -105,7 +105,7 @@ public class CartInprogressController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteCartAsync(int cid, int productId)
     {
-        bool success = await _cartInprogressRepository.RemoveCart(cid, productId);
+        bool success = await _cartInprogressRepository.RemoveCartAsync(cid, productId);
 
         return success ? NoContent() : Problem();
     }
@@ -115,7 +115,7 @@ public class CartInprogressController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> AddItemListAsync(int cid, int productId)
     {
-        bool success = await _cartInprogressRepository.AddCart(cid, productId);
+        bool success = await _cartInprogressRepository.AddCartAsync(cid, productId);
 
         return success ? NoContent() : Problem();
     }
@@ -125,7 +125,7 @@ public class CartInprogressController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteItemListAsync(int cid, int productId)
     {
-        bool success = await _cartInprogressRepository.RemoveCart(cid, productId);
+        bool success = await _cartInprogressRepository.RemoveCartAsync(cid, productId);
 
         return success ? NoContent() : Problem();
     }

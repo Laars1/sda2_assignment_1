@@ -4,12 +4,12 @@ namespace Sda2.Cart.Abstractions;
 
 public interface ICartInProgressRepository : IBaseRepository<CartInprogress>
 {
-    Task<bool> AddCart(int cid, int productId);
-    Task<bool> RemoveCart(int cid, int productId);
-    Task<bool> AddItemList(int cid, int productId);
-    Task<bool> RemoveItemList(int cid, int productId);
+    Task<bool> AddCartAsync(int cid, int productId);
+    Task<bool> RemoveCartAsync(int cid, int productId);
+    Task<bool> AddItemListAsync(int cid, int productId);
+    Task<bool> RemoveItemListAsync(int cid, int productId);
 
-    Task<bool> CustomerHasEntries(int customerId);
+    Task<bool> CustomerHasEntriesAsync(int customerId);
 
     Task<bool> DeleteByCustomerIdAsync(int customerId);
 }

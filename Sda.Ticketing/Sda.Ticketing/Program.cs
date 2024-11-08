@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Sda2.Masterdata.Abstractions;
-using Sda2.Masterdata.Persistance;
-using Sda2.Masterdata.Repositories;
-using Sda2.Masterdata.Services;
+using Sda.Ticketing.Abstractions;
+using Sda.Ticketing.Persistance;
+using Sda.Ticketing.Repositories;
+using Sda.Ticketing.Services;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,18 +17,17 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
+// Register Repositories
+builder.Services.AddScoped<IGiftCardRepository, GiftCardRepository>();
+builder.Services.AddScoped<IReturnTableRepository, ReturnTableRepository>();
+builder.Services.AddScoped<ITicketSystemRepository, TicketSystemRepository>();
+
 // Add Httpclient
 builder.Services.AddHttpClient();
 
-// Register Repositories
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepostiory>();
-builder.Services.AddScoped<ICustomerInfoRepository, CustomerInfoRepository>();
-builder.Services.AddScoped<IStoreRepository, StoresRepository>();
-builder.Services.AddScoped<IRegisterRepository, RegisterTableRepository>();
-
 // Add Httpservices
-builder.Services.AddScoped<ICartHttpService, CartHttpService>();
-builder.Services.AddScoped<ITicketingHttpService, TicketingHttpService>();
+builder.Services.AddScoped<ITaxHttpService, TaxHttpService>();
+
 
 var app = builder.Build();
 

@@ -21,7 +21,7 @@ public class CartInprogressRepository : ICartInProgressRepository
         return changedEntities > 0;
     }
 
-    public async Task<bool> AddItemList(int cid, int productId)
+    public async Task<bool> AddItemListAsync(int cid, int productId)
     {
         CartInprogress? entry = await GetByIdAsync(cid);
 
@@ -49,11 +49,11 @@ public class CartInprogressRepository : ICartInProgressRepository
         return changedEntities > 0;
     }
 
-    public async Task<bool> AddCart(int cid, int productId)
+    public async Task<bool> AddCartAsync(int cid, int productId)
     {
         CartInprogress? entry = await GetByIdAsync(cid);
 
-        if (entry == null)
+        if (entry == null) 
         {
             return false;
         }
@@ -112,7 +112,7 @@ public class CartInprogressRepository : ICartInProgressRepository
             .FirstOrDefaultAsync(x => x.CID == id);
     }
 
-    public async Task<bool> RemoveItemList(int cid, int productId)
+    public async Task<bool> RemoveItemListAsync(int cid, int productId)
     {
         CartInprogress? entry = await GetByIdAsync(cid);
 
@@ -137,7 +137,7 @@ public class CartInprogressRepository : ICartInProgressRepository
         return changedEntities > 0;
     }
 
-    public async Task<bool> RemoveCart(int cid, int productId)
+    public async Task<bool> RemoveCartAsync(int cid, int productId)
     {
         CartInprogress? entry = await GetByIdAsync(cid);
 
@@ -190,7 +190,7 @@ public class CartInprogressRepository : ICartInProgressRepository
         return changedEntities > 0;
     }
 
-    public async Task<bool> CustomerHasEntries(int customerId)
+    public async Task<bool> CustomerHasEntriesAsync(int customerId)
     {
         return await _context.CartInprogress.AnyAsync(x => x.CustomerId == customerId);
     }

@@ -12,10 +12,13 @@ public class CustomerInfoController : ControllerBase
 
     private readonly ICartHttpService _cartHttpService;
 
-    public CustomerInfoController(ICustomerInfoRepository customerRepository, ICartHttpService cartHttpService)
+    private readonly ITicketingHttpService _ticketingHttpService;
+
+    public CustomerInfoController(ICustomerInfoRepository customerRepository, ICartHttpService cartHttpService, ITicketingHttpService ticketingHttpService)
     {
         _customerRepository = customerRepository;
         _cartHttpService = cartHttpService;
+        _ticketingHttpService = ticketingHttpService;
     }
 
     [HttpGet]
@@ -71,12 +74,14 @@ public class CustomerInfoController : ControllerBase
 
         bool success = await _customerRepository.DeleteAsync(id);
 
-        bool deletedResultsOnOtherMicroservice = true;
+        bool deletedResultsOnCartMicroservice = true;
+        bool deletedResultsOnTicketingMicroservice = true;
         if (success)
         {
-            deletedResultsOnOtherMicroservice = await _cartHttpService.DeleteCartInprogressAsync(id);
+            deletedResultsOnCartMicroservice = await _cartHttpService.DeleteCartInprogressAsync(id);
+            deletedResultsOnTicketingMicroservice = await _ticketingHttpService.DeleteTicketsAsync(id);
         }
 
-        return success && deletedResultsOnOtherMicroservice ? NoContent() : Problem();
+        return success && deletedResultsOnCartMicroservice && deletedResultsOnTicketingMicroservice ? NoContent() : Problem();
     }
 }
